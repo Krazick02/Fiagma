@@ -27,28 +27,29 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store2(Request $request)
     {
         if(isset($request->password)){
             $request['password'] = bcrypt($request->password);
         }
 
-        $user = User::create($request->all());
+        dd($request);
+        // $user = User::create($request->all());
 
-        if($user){
-            //subir foto
-            if($request->hasFile('profile_photo')){
-                $name_file = Helper::store_file($request,$request->file('avatar_file'),$user,"users/avatars",null);
-                $user->profile_photo_path = $name_file;
-                $user->save();
-            }
+        // if($user){
+        //     // //subir foto
+        //     // if($request->hasFile('profile_photo')){
+        //     //     $name_file = Helper::store_file($request,$request->file('avatar_file'),$user,"users/avatars",null);
+        //     //     $user->profile_photo_path = $name_file;
+        //     //     $user->save();
+        //     // }
 
+        //     dd($user);
+        //     // return view('login');
+        // }
 
-            return redirect()->back()->with('success', 'Usuario Agregado.');
-        }
-
-
-        return redirect()->back()->with('errors','error servidor');
+        // dd('hola bastardo');
+        // // return redirect()->back()->with('errors','error servidor');
     }
 
     /**
@@ -110,19 +111,19 @@ class UserController extends Controller
 
         if($user->update($request->all())){
             //subir nuevo archivo
-            if($request->hasFile('profile_photo')){
-                //eliminar archivo anterior
-                $path = Helper::delete_file($user,"profile_photo_path","users/avatars");
+            // if($request->hasFile('profile_photo')){
+            //     //eliminar archivo anterior
+            //     $path = Helper::delete_file($user,"profile_photo_path","users/avatars");
 
-                if($path){
-                    $user->profile_photo_path = null;
-                }
+            //     if($path){
+            //         $user->profile_photo_path = null;
+            //     }
 
-                //new avatar
-                $name_file = Helper::store_file($request,$request->file('profile_photo'),$user,"users/avatars",null);
-                $user->profile_photo_path = $name_file;
-                $user->save();
-            }
+            //     //new avatar
+            //     $name_file = Helper::store_file($request,$request->file('profile_photo'),$user,"users/avatars",null);
+            //     $user->profile_photo_path = $name_file;
+            //     $user->save();
+            // }
 
 
 
@@ -145,11 +146,11 @@ class UserController extends Controller
         if ($usuario) {
             if ($usuario->delete()) {
 
-                $path = Helper::delete_file($usuario,"profile_photo_path","users/avatars");
+                // $path = Helper::delete_file($usuario,"profile_photo_path","users/avatars");
 
-                if($path){
-                    $usuario->profile_photo_path = null;
-                }
+                // if($path){
+                //     $usuario->profile_photo_path = null;
+                // }
 
 
                 return response()->json([
@@ -168,5 +169,4 @@ class UserController extends Controller
         ], 200);
 
     }
-
 }
